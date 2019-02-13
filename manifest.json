@@ -1,0 +1,31 @@
+ {
+  "manifest_version": 2,
+  "name": "SNAT",
+  "version": "0.0.1",
+  
+    "icons": {
+    "48": "128.png"
+  },
+  "content_scripts": 
+  [ 
+
+    {
+      "all_frames": true,
+      "match_about_blank": true,
+      "js": [ "jquery.js" ,"content.js"],
+      "matches": ["*://*.twitter.com/*"]
+    }
+  ],
+
+   "background": {
+      "persistent": false,
+      "scripts": [ "background.js", "jquery.js" ]
+   },
+
+   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.twitter.com/*"],
+
+      "browser_action": {
+        "default_title": "js inject"
+    }
+	
+}
