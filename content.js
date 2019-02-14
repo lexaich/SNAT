@@ -27,27 +27,32 @@ function action(){
 		var data = $(item).find('.content')[0]
 		// var header = $(data).find('.stream-item-header')[0]
 		var content = $(data).find('.js-tweet-text-container')[0]
+		GLOBAL_DATA.old_text.push($(content).html())
 		// var footer = $(data).find('.ProfileTweet-actionList')[0]
 		arr_send.push($(content).text())
-		GLOBAL_DATA.old_text.push($(content).html())
-		$(content).html(`
-			<a class="unlock" data-index="`+index+`">unlock</a>
-		`)
+		
 
+	})
+	var answ = send(arr_send)
+	answ.forEach((item,index)=>{
+		if(item){
+			var post = $('.js-stream-item')[index]
+			var content = $(post).find('.js-tweet-text-container')[0]
+			
+			$(content).html(`
+				<a class="unlock" data-index="`+index+`">unlock</a>
+			`)
+		}
 	})
 
 $(document).on('click', '.unlock', function(e){
 	e.preventDefault()
-	$(this).parent().html(GLOBAL_DATA.old_text[$(this).attr('data-index')])
+	var num = $(this).attr('data-index')
+	console.log(GLOBAL_DATA.old_text[num])
+	$(this).parent().html(GLOBAL_DATA.old_text[num])
 });
 
 
-
-// $('.unlock').on('click',function(){
-
-// 	$(this).parent().html(old_text)
-// 	// console.log(this,'unlock')
-// })
 
 
 
