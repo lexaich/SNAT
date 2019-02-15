@@ -10,10 +10,11 @@
   [ 
 
     {
-      "all_frames": true,
-      "match_about_blank": true,
+      // "all_frames": true,
+      // "match_about_blank": true,
       "js": [ "jquery.js" ,"content.js"],
-      "matches": ["*://*.twitter.com/*"]
+      "matches": ["*://*.twitter.com/*"],
+      "run_at": "document_end"
     }
   ],
 
