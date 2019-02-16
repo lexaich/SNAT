@@ -29,14 +29,12 @@ function action(){
 		if(key!='undefined'){
 			var data = $(item).find('.content')[0]
 			item.setAttribute("data-analyze","true")
-			// var header = $(data).find('.stream-item-header')[0]
 			var content = $(data).find('.js-tweet-text-container')[0]
-			
 			GLOBAL_DATA.old_text[key] = ($(content).html())
 
 			var text =  $(content).find('a,img').remove()
 			text = $(content).text()
-
+			$(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
 			arr_send[key] = text
 		}
 
@@ -56,7 +54,7 @@ function action(){
 		})
 	}
 
-	send(arr_send, callback)
+	// send(arr_send, callback)
 }
 
 $(document).on('click', '.unlock', function(e){
@@ -64,6 +62,17 @@ $(document).on('click', '.unlock', function(e){
 	var num = $(this).attr('data-index')
 	// console.log(GLOBAL_DATA.old_text[num])
 	$(this).parent().html(GLOBAL_DATA.old_text[num])
+});
+$(document).on('click', '.lock', function(e){
+	e.preventDefault()
+	// console.log(this)
+	var key = $(this).attr('data-index')
+	var post = $('.js-stream-item[data-item-id = '+key+']')
+	var content = $(post).find('.js-tweet-text-container')[0]
+	GLOBAL_DATA.old_text[key] = ($(content).html())
+	$(content).html(`
+					<a class="unlock" data-index="`+key+`">This post is marked as toxic. Click here to show text</a>
+				`)
 });
 
 
