@@ -9,6 +9,9 @@ port.onMessage.addListener(function(request)
             eval(request.func);
         }else if(request.action == 'start'){
         	action()
+        }else if(request.action == 'set threshold'){
+        	GLOBAL_DATA.threshold = request.threshold
+        	console.log(request)
         }
     });
 
@@ -16,7 +19,7 @@ chrome.runtime.onMessage.addListener(request=>{
 	eval(request.func);
 })
 
-var GLOBAL_DATA = {old_text:{},analyze:false}
+var GLOBAL_DATA = {old_text:{},analyze:false,threshold:0}
 
 function action(){
 	setTimeout(function(){
@@ -54,7 +57,7 @@ function action(){
 		})
 	}
 
-	// send(arr_send, callback)
+	send(arr_send, callback)
 }
 
 $(document).on('click', '.unlock', function(e){
@@ -92,7 +95,8 @@ $('ol.stream-items').on("DOMNodeInserted", function (event) {
 function send(mess, callback){
   var out = []
 
-  var data = mess
+  var data = {"threshold": GLOBAL_DATA.threshold, "messages": mess}
+  console.log(data)
   $.ajax({
     url:'http://localhost:5000/api',
     method: "POST",

@@ -7,9 +7,7 @@ var ports = {};
 var id = 0;
 
 chrome.runtime.onConnect.addListener(function(port) {
-// console.log(port);
 	port.onMessage.addListener(function(request){
-		// console.log(port,request);
 		if(port.name == 'site')
 		{
 			console.log('site loaded')
@@ -19,6 +17,12 @@ chrome.runtime.onConnect.addListener(function(port) {
 		}
 	})
 })
+chrome.runtime.onMessage.addListener(function(request){
+	if(request.action=='set threshold')
+	{
+		ports.site.postMessage({action:"set threshold",threshold:request.threshold});
+	}
+});
 
 function DoPort(func){
 	ports.site.postMessage({action:"eval",func:func});
@@ -31,3 +35,4 @@ function DoConnect(id,func){
 	
 }
 
+	
