@@ -14,8 +14,7 @@
       // "match_about_blank": true,
       "js": [ "jquery.js" ,"content.js"],
       "matches": ["*://*.twitter.com/*"],
-      "run_at": "document_end"
-    }
+      "run_at": "document_start"    }
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
    "background": {

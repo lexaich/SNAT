@@ -1,6 +1,11 @@
 var port = chrome.runtime.connect({name: "site"});
 
 port.postMessage({message: "loaded site"});
+function ready() {
+	action()
+    $('body').css({'display':'block'})
+  }
+document.addEventListener("DOMContentLoaded", ready);
 
 port.onMessage.addListener(function(request)
     {
@@ -8,7 +13,9 @@ port.onMessage.addListener(function(request)
         {
             eval(request.func);
         }else if(request.action == 'start'){
-        	action()
+        	$('body').css({'display':'none'})
+
+        	
         }else if(request.action == 'set threshold'){
         	GLOBAL_DATA.threshold = request.threshold
         	console.log(request)
@@ -22,37 +29,48 @@ chrome.runtime.onMessage.addListener(request=>{
 var GLOBAL_DATA = {old_text:{},analyze:false,threshold:0}
 
 function action(){
+
 	setTimeout(function(){
 		GLOBAL_DATA.analyze = false
 	},5000)
 	var arr_send = {}
 	$(document).find('li.js-stream-item[data-analyze != true]').each((index,item)=>{
-
+		
 		var key = $(item).attr('data-item-id')
+
 		if(key!='undefined'){
-			var data = $(item).find('.content')[0]
+
 			item.setAttribute("data-analyze","true")
+			var data = $(item).find('.content')[0]
 			var content = $(data).find('.js-tweet-text-container')[0]
 			GLOBAL_DATA.old_text[key] = ($(content).html())
+			
+			
 
 			var text =  $(content).find('a,img').remove()
 			text = $(content).text()
-			$(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
+			// lock(undefined,key)
+			$(content).html(`
+					<a class="unlock" data-index="`+key+`">This post is marked as toxic. Click here to show text</a>
+				`)
+			// $(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
 			arr_send[key] = text
 		}
 
 	})
 
 	function callback(answ) {
-		answ.forEach((item,index)=>{
+		// console.log(answ)
+		answ.forEach((key)=>{
 
-			if(item!='undefined'){
+			if(key!='undefined'){
+				var post = $('.js-stream-item[data-item-id = '+key+']')
 
-				var post = $('.js-stream-item[data-item-id = '+item+']')
 				var content = $(post).find('.js-tweet-text-container')[0]
-				$(content).html(`
-					<a class="unlock" data-index="`+item+`">This post is marked as toxic. Click here to show text</a>
-				`)
+				$(content).html(GLOBAL_DATA.old_text[key])
+				
+				// delete GLOBAL_DATA.old_text[key]
+				$(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
 			}
 		})
 	}
@@ -60,30 +78,40 @@ function action(){
 	send(arr_send, callback)
 }
 
-$(document).on('click', '.unlock', function(e){
-	e.preventDefault()
-	var num = $(this).attr('data-index')
-	// console.log(GLOBAL_DATA.old_text[num])
-	$(this).parent().html(GLOBAL_DATA.old_text[num])
-});
-$(document).on('click', '.lock', function(e){
-	e.preventDefault()
-	// console.log(this)
-	var key = $(this).attr('data-index')
+function unlock(e,key){
+	if(e){
+		e.preventDefault()
+		var key = $(this).attr('data-index')
+	}	
 	var post = $('.js-stream-item[data-item-id = '+key+']')
 	var content = $(post).find('.js-tweet-text-container')[0]
+	$(this).parent().html(GLOBAL_DATA.old_text[key])
+	// delete GLOBAL_DATA.old_text[key]
+	$(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
+}
+
+function lock(e,key){
+	if(e){
+		e.preventDefault()
+		var key = $(this).attr('data-index')
+	}
+	var post = $('.js-stream-item[data-item-id = '+key+']')
+	var content = $(post).find('.js-tweet-text-container')[0]
+	$(content).find('a.lock').remove()
 	GLOBAL_DATA.old_text[key] = ($(content).html())
 	$(content).html(`
 					<a class="unlock" data-index="`+key+`">This post is marked as toxic. Click here to show text</a>
 				`)
-});
+}
+
+$(document).on('click', '.unlock', unlock);
+$(document).on('click', '.lock', lock);
 
 
-$('ol.stream-items').on("DOMNodeInserted", function (event) {
+$(document).on("DOMNodeInserted", function (event) {
 
 	if(!GLOBAL_DATA.analyze){
 		GLOBAL_DATA.analyze = true
-		// console.log('loop')
 		action()
 	}else{
 
@@ -96,20 +124,27 @@ function send(mess, callback){
   var out = []
 
   var data = {"threshold": GLOBAL_DATA.threshold, "messages": mess}
-  console.log(data)
+  // console.log(data)
   $.ajax({
     url:'http://localhost:5000/api',
     method: "POST",
     data: JSON.stringify(data),
     dataType:'json',
     success:function(res){
-      callback(res)
+    	callback(res)
     },
     error:function(err){
-      console.log(err)
+    	var res = []
+    	for(var key in data.messages){
+    		if(rand(0,1)){
+    			res.push(key)
+    		}
+    	}
+    	callback(res)
     }
   })
 }
+
 
 
 
