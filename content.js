@@ -134,13 +134,14 @@ function send(mess, callback){
     	callback(res)
     },
     error:function(err){
-    	var res = []
-    	for(var key in data.messages){
-    		if(rand(0,1)){
-    			res.push(key)
-    		}
-    	}
-    	callback(res)
+    	console.log(err)
+    	// var res = []
+    	// for(var key in data.messages){
+    	// 	if(rand(0,1)){
+    	// 		res.push(key)
+    	// 	}
+    	// }
+    	// callback(res)
     }
   })
 }
