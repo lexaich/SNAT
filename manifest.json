@@ -12,9 +12,17 @@
     {
       // "all_frames": true,
       // "match_about_blank": true,
-      "js": [ "jquery.js" ,"content.js"],
+      "js": [ "jquery.js" ,"twitter.js"],
       "matches": ["*://*.twitter.com/*"],
-      "run_at": "document_start"    }
+      "run_at": "document_start"
+    },
+    {
+      // "all_frames": true,
+      // "match_about_blank": true,
+      "js": [ "jquery.js" ,"tut.js"],
+      "matches": ["*://*.talks.by/*"],
+      "run_at": "document_start"
+    }
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
    "background": {
@@ -22,7 +30,7 @@
       "scripts": [ "background.js", "jquery.js" ]
    },
 
-   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.twitter.com/*"],
+   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.twitter.com/*","*://*.talks.by/*"],
 
       "browser_action": {
         "default_title": "SNAT",
