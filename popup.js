@@ -7,6 +7,9 @@
 //         });
 
 // })
+$('#slider').on('mouseup',function(e){
+	chrome.runtime.sendMessage(chrome.runtime.id,{action:'reload'})
+})
 
 chrome.storage.sync.get(['threshold'], function(result) {
 
