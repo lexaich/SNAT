@@ -39,21 +39,22 @@ function action(){
 	},5000)
 	// console.log($('.permalink-container *').is('.permalink-replies'))
 	var arr_send = {}
-	$(document).find('li.js-stream-item[data-analyze != true]').each((index,item)=>{
+	$(document).find('ul.b-messages-thread > li[data-analyze != true]').each((index,item)=>{
 		
-		var key = $(item).attr('data-item-id')
+		var key = $(item).attr('id')
 
 		if(key!='undefined'){
 
 			item.setAttribute("data-analyze","true")
-			var data = $(item).find('.content')[0]
-			var content = $(data).find('.js-tweet-text-container')[0]
+			var content = $(item).find('.content')[0]
+			// var content = $(data).find('.js-tweet-text-container')[0]
 			GLOBAL_DATA.old_text[key] = ($(content).html())
 			
 			
 
 			var text =  $(content).find('a,img').remove()
 			text = $(content).text()
+			// console.log(text)
 			// lock(undefined,key)
 			$(content).html(`
 					<a class="unlock" data-index="`+key+`">This post is marked as toxic. Click here to show text</a>
@@ -65,13 +66,12 @@ function action(){
 	})
 
 	function callback(answ) {
-		console.log(answ)
+		// console.log(answ)
 		answ.forEach((key)=>{
 
 			if(key!='undefined'){
-				var post = $('.js-stream-item[data-item-id = '+key+']')
-
-				var content = $(post).find('.js-tweet-text-container')[0]
+				var post = $('li#'+key)
+				var content = $(post).find('.content')[0]
 				$(content).html(GLOBAL_DATA.old_text[key])
 				
 				// delete GLOBAL_DATA.old_text[key]
@@ -88,8 +88,8 @@ function unlock(e,key){
 		e.preventDefault()
 		var key = $(this).attr('data-index')
 	}	
-	var post = $('.js-stream-item[data-item-id = '+key+']')
-	var content = $(post).find('.js-tweet-text-container')[0]
+	var post = $('li#'+key)
+	var content = $(post).find('.content')[0]
 	$(this).parent().html(GLOBAL_DATA.old_text[key])
 	// delete GLOBAL_DATA.old_text[key]
 	$(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
@@ -100,8 +100,8 @@ function lock(e,key){
 		e.preventDefault()
 		var key = $(this).attr('data-index')
 	}
-	var post = $('.js-stream-item[data-item-id = '+key+']')
-	var content = $(post).find('.js-tweet-text-container')[0]
+	var post = $('li#'+key)
+	var content = $(post).find('.content')[0]
 	$(content).find('a.lock').remove()
 	GLOBAL_DATA.old_text[key] = ($(content).html())
 	$(content).html(`
@@ -123,6 +123,7 @@ $(document).on("DOMNodeInserted", function (event) {
 	}
 	
 });
+
 
 
 

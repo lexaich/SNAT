@@ -6,6 +6,8 @@ function ready() {
     console.log()
     if($('body *').is('.themaCommentTable > tbody > tr')){
     	$('html').css({'display':'block'})
+    }else{
+    	setTimeout(()=>{$('html').css({'display':'block'})},1000)
     }
  
   }
@@ -120,43 +122,6 @@ $(document).on("DOMNodeInserted", function (event) {
 });
 
 
-function send(mess, callback){
-
-  // var out = []
-  // console.log(mess)
-  chrome.storage.sync.get(['threshold'], function(result) {
-  	// console.log(result)
-  	  var data = {"threshold": result.threshold, "messages": mess}
-  	  // console.log(data)
-
-  	  fetch("http://localhost:5000/api",
-		{
-		    headers: {
-		      'Accept': 'application/json',
-		      'Content-Type': 'application/json'
-		    },
-		    method: "POST",
-		    body: JSON.stringify(data)
-		})
-		.then(function(res){ callback(res) })
-		.catch(function(res){ console.log(res) })
-		
-	  // $.ajax({
-	  //   url:'http://localhost:5000/api',
-	  //   method: "post",
-	  //   data:JSON.stringify(data),
-	  //   dataType:'json',
-	  //   success:function(res){
-	  //   	callback(res)
-	  //   },
-	  //   error:function(err){
-	  //   	console.log(err)
-
-	  //   }
-	  // })
-    });
-
-}
 
 
 function rand(min, max)
