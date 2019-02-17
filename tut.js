@@ -128,19 +128,32 @@ function send(mess, callback){
   	// console.log(result)
   	  var data = {"threshold": result.threshold, "messages": mess}
   	  // console.log(data)
-	  $.ajax({
-	    url:'http://localhost:5000/api',
-	    method: "POST",
-	    data: JSON.stringify(data),
-	    dataType:'json',
-	    success:function(res){
-	    	callback(res)
-	    },
-	    error:function(err){
-	    	console.log(err)
 
-	    }
-	  })
+  	  fetch("http://localhost:5000/api",
+		{
+		    headers: {
+		      'Accept': 'application/json',
+		      'Content-Type': 'application/json'
+		    },
+		    method: "POST",
+		    body: JSON.stringify(data)
+		})
+		.then(function(res){ callback(res) })
+		.catch(function(res){ console.log(res) })
+		
+	  // $.ajax({
+	  //   url:'http://localhost:5000/api',
+	  //   method: "post",
+	  //   data:JSON.stringify(data),
+	  //   dataType:'json',
+	  //   success:function(res){
+	  //   	callback(res)
+	  //   },
+	  //   error:function(err){
+	  //   	console.log(err)
+
+	  //   }
+	  // })
     });
 
 }
