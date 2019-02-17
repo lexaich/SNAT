@@ -55,6 +55,7 @@ function action(){
 			$(content).html(`
 					<a class="unlock" data-index="`+key+`">This post is marked as toxic. Click here to show text</a>
 				`)
+			// console.log(text)
 			arr_send[key] = text
 		}
 
@@ -70,7 +71,7 @@ function action(){
 			$(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
 		})
 	}
-
+	// console.log(arr_send)
 	send(arr_send, callback)
 }
 
@@ -120,11 +121,13 @@ $(document).on("DOMNodeInserted", function (event) {
 
 
 function send(mess, callback){
-  var out = []
+
+  // var out = []
+  // console.log(mess)
   chrome.storage.sync.get(['threshold'], function(result) {
   	// console.log(result)
   	  var data = {"threshold": result.threshold, "messages": mess}
-
+  	  // console.log(data)
 	  $.ajax({
 	    url:'http://localhost:5000/api',
 	    method: "POST",
