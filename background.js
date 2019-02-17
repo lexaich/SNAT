@@ -2,7 +2,9 @@ chrome.browserAction.onClicked.addListener(function(tab)
 {
 
 });
-
+chrome.storage.sync.set({threshold: 0}, function() {
+          // console.log('Value is set to ' + value);
+        });
 var ports = {};
 var id = 0;
 
