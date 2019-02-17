@@ -50,6 +50,7 @@ function action(){
 			item.setAttribute("data-analyze","true")
 
 			var content = $(post).find('.row-content-tut')
+			$(content).css({"font-size":"18px"})
 			GLOBAL_DATA.old_text[key] = ($(content).html())
 			var text = $(content).find('a,br,img').remove()
 			text = $(content).text()

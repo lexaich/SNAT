@@ -46,15 +46,15 @@ function action(){
 		if(key!='undefined'){
 
 			item.setAttribute("data-analyze","true")
-			var data = $(item).find('.content')[0]
-			var content = $(data).find('.js-tweet-text-container')[0]
+			// var data = $(item).find('.content')[0]
+			var content = $(item).next()
 			GLOBAL_DATA.old_text[key] = ($(content).html())
 			
 			
 
 			var text =  $(content).find('a,img').remove()
 			text = $(content).text()
-			// lock(undefined,key)
+			console.log(text)
 			$(content).html(`
 					<a class="unlock" data-index="`+key+`">This post is marked as toxic. Click here to show text</a>
 				`)
@@ -65,13 +65,13 @@ function action(){
 	})
 
 	function callback(answ) {
-		console.log(answ)
+		// console.log(answ)
 		answ.forEach((key)=>{
 
 			if(key!='undefined'){
-				var post = $('.js-stream-item[data-item-id = '+key+']')
+				var post = $('#'+key)
 
-				var content = $(post).find('.js-tweet-text-container')[0]
+				var content = $(post).next()
 				$(content).html(GLOBAL_DATA.old_text[key])
 				
 				// delete GLOBAL_DATA.old_text[key]
@@ -88,8 +88,9 @@ function unlock(e,key){
 		e.preventDefault()
 		var key = $(this).attr('data-index')
 	}	
-	var post = $('.js-stream-item[data-item-id = '+key+']')
-	var content = $(post).find('.js-tweet-text-container')[0]
+	var post = $('#'+key)
+
+	var content = $(post).next()
 	$(this).parent().html(GLOBAL_DATA.old_text[key])
 	// delete GLOBAL_DATA.old_text[key]
 	$(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
@@ -100,8 +101,9 @@ function lock(e,key){
 		e.preventDefault()
 		var key = $(this).attr('data-index')
 	}
-	var post = $('.js-stream-item[data-item-id = '+key+']')
-	var content = $(post).find('.js-tweet-text-container')[0]
+	var post = $('#'+key)
+
+	var content = $(post).next()
 	$(content).find('a.lock').remove()
 	GLOBAL_DATA.old_text[key] = ($(content).html())
 	$(content).html(`

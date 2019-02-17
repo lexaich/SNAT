@@ -29,6 +29,13 @@
       "js": [ "jquery.js" ,"onliner.js","lib.js"],
       "matches": ["*://*.forum.onliner.by/*"],
       "run_at": "document_start"
+    },
+    {
+      // "all_frames": true,
+      // "match_about_blank": true,
+      "js": [ "jquery.js" ,"2ch.js","lib.js"],
+      "matches": ["*://*.2ch.hk/*"],
+      "run_at": "document_start"
     }
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
@@ -37,7 +44,7 @@
       "scripts": [ "background.js", "jquery.js" ]
    },
 
-   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.twitter.com/*","*://*.talks.by/*","*://*.forum.onliner.by/*","*://*.localhost/*"],
+   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.twitter.com/*","*://*.talks.by/*","*://*.forum.onliner.by/*","*://*.localhost/*","*://*.2ch.hk/*"],
 
       "browser_action": {
         "default_title": "SNAT",
