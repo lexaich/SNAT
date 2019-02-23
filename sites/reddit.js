@@ -45,6 +45,7 @@ function setParent() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("Request loaded")
   request = getRequest()
   sendToxicityRequest(request, setToxicity)
 });

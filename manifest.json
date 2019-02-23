@@ -9,7 +9,8 @@
   "content_scripts": 
   [ 
     {
-      "js": [ "jquery.js" ,"reddit_v2.js","lib.js"],
+      "js": ["libs/jquery.js", "libs/spin.js", "sites/reddit.js", "request.js"],
+      "css": ["libs/spin.css"],
       "matches": ["*://*.reddit.com/*"],
       "run_at": "document_start"
     }
@@ -17,14 +18,13 @@
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
    "background": {
       "persistent": false,
-      "scripts": [ "background.js", "jquery.js" ]
+      "scripts": [ "background.js", "libs/jquery.js" ]
    },
 
    "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.localhost/*","*://*.reddit.com/*"],
 
       "browser_action": {
-        "default_title": "SNAT",
-        "default_popup":"popup.html"
+        "default_title": "SNAT"
     }
 	
 }
