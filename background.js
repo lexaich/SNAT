@@ -38,4 +38,3 @@ function DoConnect(id,func){
 	
 }
 
-	
