@@ -14,6 +14,7 @@
       callback(res)
     })
     .then(() => {
+      console.log("Request received")
       spinner.stop()
     })
 		.catch(function(res){ console.log(res) })
