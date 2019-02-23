@@ -246,10 +246,14 @@ function summ(scheme_arr_in){
 
 		// if(item.parent.length==0){
 			item['total_toxicity'] = Number(item['toxicity'])
-			// console.log(item.total_toxicity)
+			// item['total_toxicity'] = 'M '+item['toxicity']
+			// // console.log(item.total_toxicity)
+			// console.log('parent',item.div)
 			var childrens = arr.filter(child=>{
+				
 				if(child.parent.indexOf(item.id)!=-1&&child.text!=''){
 					if(child['toxicity']!=undefined){// потому что more replies тоже дети но без токсичности
+						// console.log('child',child.div)
 						// console.log(item['total_toxicity'],child['toxicity'])
 						item['total_toxicity'] = item['total_toxicity'] + Number(child['toxicity']);
 					} 
@@ -257,57 +261,78 @@ function summ(scheme_arr_in){
 					return true
 				}
 			})
-			// childrens.forEach(child=>{})
-			// console.log(item.total_toxicity,childrens.length+1,item['total_toxicity']/(childrens.length+1))
 			item['total_toxicity'] = item['total_toxicity']/(childrens.length+1)
 			item['total_toxicity'] = item['total_toxicity'].toFixed(2)
-			// console.log(item.total_toxicity)
-		// }else{
-
-		// }
-		
-
 		// console.log(arr)
 	})
 }
+// console.log(scheme_arr)
 var scheme_out = sort(scheme_arr)
 function sort(scheme_arr_in){
 
-	var to_sort = []
+	var cheked = []
+	var global_to_sort = []
 	var structure = {}
 	scheme_arr_in.forEach((item,index,arr)=>{
+		if(item.text=='')return true
+			cheked.push(item.id)
+		var to_sort = [item.total_toxicity]
 
-		if(item.parent==0){
-			to_sort.push(item['total_toxicity'])
-			structure[item['total_toxicity']] = item.id
+		
+
+		// if(item.parent==0){
+			var brothers = arr.filter(child=>{
+				if(JSON.stringify(item.parent)==JSON.stringify(child.parent)
+					&&child.text!=''
+					&&item.id!=child.id
+					&&cheked.indexOf(child.id)==-1
+					){
+					// console.log(item.parent,child.parent)
+					cheked.push(child.id)
+					to_sort.push(child['total_toxicity'])
+					// to_sort.push(child.div)
+					// structure[child.id] =  child['total_toxicity']
+					return true
+				}
+			})
+			global_to_sort.push(to_sort)
+
+			// to_sort.
+			// var sorted = getSort(to_sort)
+			// to_sort.push(item['total_toxicity'])
+			// structure[item['total_toxicity']] = item.id
 			// var childrens = arr.filter(child=>{if(child.parent.indexOf(item.id)!=-1)return true})
-		}
+		// }
 		
 
 	})
-
-	var sorted = getSort(to_sort)
-	// console.log(to_sort,sorted)
+	console.log(1,global_to_sort)
+	// var sorted = global_to_sort.map(item=>{
+	// 	return getSort(item)
+	// })
+	// console.log(2,sorted)
+	
+	// console.log(global_to_sort)
 
 	var out = []
-	sorted.forEach(item=>{
-		var id = structure[item]
-		var placed_elems = scheme_arr_in.filter(child=>{
-			if(child.id==id||child.parent.indexOf(id)!=-1){
-				return true
-			}
+	// sorted.forEach(item=>{
+	// 	var id = structure[item]
+	// 	var placed_elems = scheme_arr_in.filter(child=>{
+	// 		if(child.id==id||child.parent.indexOf(id)!=-1){
+	// 			return true
+	// 		}
 
-		})
-		out.push(placed_elems)
+	// 	})
+	// 	out.push(placed_elems)
 		
-	})
+	// })
 	var output = []
 	out.forEach(item=>{
 		item.forEach(elemt=>{
 			output.push(elemt)
 		})
 	})
-// console.log(output)
+console.log(scheme_arr)
 return output
 
 	function getSort(data) {
@@ -399,8 +424,8 @@ return output
 // console.log(loop3)
 // Очищаем родительский элемент
 	
-setTimeout(function(){$(place).html(''); },4000)
-	setTimeout(function(){rebuild(scheme_out)},5000)
+// setTimeout(function(){$(place).html(''); },4000)
+	// setTimeout(function(){rebuild(scheme_out)},5000)
 	
 	function rebuild(elements){
 		elements.forEach(item=>{
