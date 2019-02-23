@@ -1,6 +1,7 @@
 var port = chrome.runtime.connect({name: "site"});
 
 port.postMessage({message: "loaded site"});
+
 function ready() {
 	$('html').css({'display':'block'})
 	action()
@@ -35,7 +36,6 @@ chrome.runtime.onMessage.addListener(request=>{
 var GLOBAL_DATA = {old_text:{},analyze:false,threshold:0}
 
 function action(){
-	// console.log('ffd')
 	setTimeout(function(){
 		GLOBAL_DATA.analyze = false
 	},5000)
@@ -178,7 +178,6 @@ function action(){
 		}
 		$.each(tredlines,get_array)
 		scheme_arr.push(element)
-			//console.log(tredlines)	
 	})
 	// var test = 
 	// console.log(scheme_arr)

@@ -8,37 +8,8 @@
   },
   "content_scripts": 
   [ 
-
-    // {
-    //   // "all_frames": true,
-    //   // "match_about_blank": true,
-    //   "js": [ "jquery.js" ,"twitter.js","lib.js"],
-    //   "matches": ["*://*.twitter.com/*"],
-    //   "run_at": "document_start"
-    // },
-    // {
-    //   // "all_frames": true,
-    //   // "match_about_blank": true,
-    //   "js": [ "jquery.js" ,"tut.js","lib.js"],
-    //   "matches": ["*://*.talks.by/*"],
-    //   "run_at": "document_start"
-    // },
-    // {
-    //   // "all_frames": true,
-    //   // "match_about_blank": true,
-    //   "js": [ "jquery.js" ,"onliner.js","lib.js"],
-    //   "matches": ["*://*.forum.onliner.by/*"],
-    //   "run_at": "document_start"
-    // },
-    // {
-    //   // "all_frames": true,
-    //   // "match_about_blank": true,
-    //   "js": [ "jquery.js" ,"2ch.js","lib.js"],
-    //   "matches": ["*://*.2ch.hk/*"],
-    //   "run_at": "document_start"
-    // },
     {
-      "js": [ "jquery.js" ,"reddit.js","lib.js"],
+      "js": [ "jquery.js" ,"reddit_v2.js","lib.js"],
       "matches": ["*://*.reddit.com/*"],
       "run_at": "document_start"
     }
@@ -49,7 +20,7 @@
       "scripts": [ "background.js", "jquery.js" ]
    },
 
-   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.twitter.com/*","*://*.talks.by/*","*://*.forum.onliner.by/*","*://*.localhost/*","*://*.2ch.hk/*","*://*.reddit.com/*"],
+   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.localhost/*","*://*.reddit.com/*"],
 
       "browser_action": {
         "default_title": "SNAT",
