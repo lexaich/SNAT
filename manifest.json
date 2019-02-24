@@ -10,7 +10,7 @@
   [ 
     {
       "js": ["libs/jquery.js", "libs/spin.js", "sites/reddit.js", "request.js"],
-      "css": ["libs/spin.css"],
+      "css": ["libs/spin.css", "sites/reddit.css"],
       "matches": ["*://*.reddit.com/*"],
       "run_at": "document_start"
     }

@@ -24,3 +24,7 @@
     opacity: 1;
   }
 }
+
+.spinner {
+   position: fixed !important; 
+}

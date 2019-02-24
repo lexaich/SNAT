@@ -24,7 +24,7 @@ function sendToxicityRequest(data, callback){
 }
 
 function startSpinner() {
-  var target = document.querySelector('[data-test-id="post-content"]');
+  var target = document.querySelector('body');
   var spinner = new Spinner({}).spin(target);
   return spinner
 }

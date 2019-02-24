@@ -1,4 +1,3 @@
-
 var oldUrl = null
 var oldCommentsNumber = 0
 
@@ -22,14 +21,37 @@ function setToxicity(response) {
   Object.keys(response).map((key) => {
     $("#" + key).parent().parent().attr("data-toxicity", response[key])
   })
+
   setParent()
-  sortElements($("[data-toxicity]:not([data-parent-id]").toArray())
+
+  var elements = $("[data-toxicity]:not([data-parent-id]").toArray()
+  aggregateToxicity(elements)
+  sortElements(elements)
+}
+
+function aggregateToxicity(elements) {
+  elements.map((element) => {
+    var id = $(element).find("div > div").attr("id")
+    var children = $("[data-parent-id=" + id + "]").toArray()
+
+    aggregateToxicity(children)
+
+    var overallToxicity = children.reduce(
+      (acc, element) => acc + parseFloat(element.getAttribute("data-average-toxicity")),
+      parseFloat(element.getAttribute("data-toxicity"))
+    )
+
+    var averageToxicity = overallToxicity / (children.length + 1)
+
+    $(element).attr("data-average-toxicity", averageToxicity)
+    $(element).attr("data-average-toxicity-class", Math.round(averageToxicity * 10))
+  })
 }
 
 function sortElements(elements) {
   elements.sort((e1, e2) => {
-    var toxicity1 = parseFloat(e1.getAttribute("data-toxicity"))
-    var toxicity2 = parseFloat(e2.getAttribute("data-toxicity"))
+    var toxicity1 = parseFloat(e1.getAttribute("data-average-toxicity"))
+    var toxicity2 = parseFloat(e2.getAttribute("data-average-toxicity"))
     if (toxicity1 < toxicity2)
       return -1
     else
@@ -44,7 +66,6 @@ function sortElements(elements) {
 
     $(element).detach()
     sortElements(children)
-    // $('что').appendTo('куда')
     parent.prepend(copy)
   })
 }
