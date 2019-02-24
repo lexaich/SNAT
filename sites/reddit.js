@@ -1,26 +1,18 @@
-var port = chrome.runtime.connect({name: "site"});
 
-port.postMessage({message: "loaded site"});
-port.onMessage.addListener(function(request)
-    {
-        if(request.action == 'eval')
-        {
-            eval(request.func);
-        }
-    });
-chrome.runtime.onMessage.addListener(request=>{
-  eval(request.func);
-})
+var oldUrl = null
+var oldCommentsNumber = 0
 
+function hideBuggedElements() {
+  $("div[id^='moreComments'], div[id^='continueThread']").hide()
+  $($('div[class ^= Comment]').find('span:contains(Comment deleted by user)')).hide()
+}
 
 function getRequest() {
   var request = {}
-  var delted_comments = $($('div[class ^= Comment]').find('span:contains(Comment deleted by user)'))
-
-  $("div[data-test-id=comment]").map((index, element) => {
-
+  $("div[data-test-id=comment]:not([data-processed])").map((index, element) => {
     var id = $(element).parent().parent().parent().attr("id")
     var text = $(element).text()
+    $(element).attr("data-processed", true)
     request[id] = text
   })
   return request
@@ -64,34 +56,20 @@ function setParent() {
   })
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("Request loaded")
+function filterToxicComments() {
+  hideBuggedElements()
   request = getRequest()
   sendToxicityRequest(request, setToxicity)
-});
+}
 
-// $(document).on("DOMNodeInserted", function (event) {
+function checkPage() {
+  var commentsNumber = $("div[data-test-id=comment]").length
+  if ((oldUrl != window.location.href) || (oldCommentsNumber < commentsNumber)) {
+    oldUrl = window.location.href
+    oldCommentsNumber = commentsNumber
+    filterToxicComments()    
+  }
+}
 
-//     console.log('loop')
 
-  
-// });
-
-
-
-// .ixBuze {
-//     height: 16px;
-//     margin-bottom: 8px;
-//     width: 176px;
-//     background-color: rgb(214, 214, 214);
-//     border-radius: 4px;
-// }
-// .dwhAtJ {
-//     height: 124px;
-//     margin-bottom: 12px;
-//     width: 100%;
-//     background-color: rgb(214, 214, 214);
-//     border-radius: 4px;
-// }
-
-//   <div class="_2o0N1VHuLszWHqY5A8iayv"><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div><div class="_2114DnVtHe_0MtbEW85tnL"><div class="_3j7WNOCzFwCp1SXZGJP1-V"><div class="_2q7IQ0BUOWeEZoeAxN555e x03auy-7 cYehNo"><i class="icon icon-upvote _2Jxk822qXs4DaXwsN7yyHA"></i></div><div class="_1iKd82bq_nqObFvSH1iC_Q x03auy-8 jcBcln"><i class="icon icon-downvote ZyxIIl4FP5gHGrJDzNpUC"></i></div></div><div class="_3tQxKBNuEJsKH_mPQEy34W"><div class="x03auy-9 ixBuze"></div><div class="x03auy-10 dwhAtJ"></div></div></div></div>
+setInterval(checkPage, 5000)
