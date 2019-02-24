@@ -3,7 +3,7 @@
 function sendToxicityRequest(data, callback){
   var spinner = startSpinner()
   chrome.storage.sync.get(['threshold'], function(result) {
-  	fetch("http://localhost:5000/api",
+  	fetch(API_PATH,
 		{
 	    method: "POST",
       headers: {
