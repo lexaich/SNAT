@@ -1,10 +1,16 @@
 var oldUrl = null
+var oldCommentsNumber = 0
+
+function hideBuggedElements() {
+  $("div[id^='moreComments'], div[id^='continueThread']").hide()
+}
 
 function getRequest() {
   var request = {}
-  $("div[data-test-id=comment]:not([data-toxicity])").map((index, element) => {
+  $("div[data-test-id=comment]:not([data-processed])").map((index, element) => {
     var id = $(element).parent().parent().parent().attr("id")
     var text = $(element).text()
+    $(element).attr("data-processed", true)
     request[id] = text
   })
   return request
@@ -47,21 +53,18 @@ function setParent() {
 }
 
 function filterToxicComments() {
-  if (oldUrl != window.location.href) {
+  hideBuggedElements()
+  request = getRequest()
+  sendToxicityRequest(request, setToxicity)
+}
+
+function checkPage() {
+  var commentsNumber = $("div[data-test-id=comment]").length
+  if ((oldUrl != window.location.href) || (oldCommentsNumber < commentsNumber)) {
     oldUrl = window.location.href
-    console.log("Filter loaded")
-    request = getRequest()
-    sendToxicityRequest(request, setToxicity)
+    oldCommentsNumber = commentsNumber
+    filterToxicComments()    
   }
 }
 
-setInterval(filterToxicComments, 100)
-
-// var target = $("div[data-test-id=comment]").parent().parent().parent().parent();
-// var observer = new MutationObserver(function(mutations) {
-//   mutations.forEach(function(mutation) {
-//     console.log(mutation.type);
-//   });    
-// });
-// var config = { attributes: true, childList: true, characterData: true };
-// observer.observe(target, config);
+setInterval(checkPage, 5000)

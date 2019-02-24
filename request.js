@@ -1,4 +1,6 @@
-﻿function sendToxicityRequest(data, callback){
+﻿var API_PATH = "http://34.73.86.221/api"
+
+function sendToxicityRequest(data, callback){
   var spinner = startSpinner()
   chrome.storage.sync.get(['threshold'], function(result) {
   	fetch("http://localhost:5000/api",
