@@ -1,5 +1,4 @@
 ﻿function send(mess, callback){
-
   // var out = []
   // console.log(mess)
   chrome.storage.sync.get(['threshold'], function(result) {
