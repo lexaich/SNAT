@@ -4,6 +4,7 @@ port.postMessage({message: "loaded site"});
 function ready() {
 	$('html').css({'display':'block'})
 	action()
+
 	// блюр странички
     // if($('html *').is('li.js-stream-item')){
     	
@@ -40,7 +41,6 @@ function action(){
 	setTimeout(function(){
 		GLOBAL_DATA.analyze = false
 	},5000)
-
 	
 	var scheme = {}
 	var scheme_arr = []
@@ -60,19 +60,19 @@ function action(){
 		var tredlines = $(tredlines_container).children('div')
 		var tredlines_count = tredlines.length
 
-
 		var element = {
 			div:post[0],
 			id:$(post[0]).attr('id'),
 			text:text,
-
 			parent:[],
 		}
+
 
 		function get_array(index,tredline_item){
 			var ids = $(tredline_item).attr('class').split(' ')
 
 			if(ids.length == 2){
+
 
 			}else if(ids.length == 3){
 				element['parent'].push(ids[0])
@@ -91,12 +91,14 @@ function action(){
 	})
 
 
+
 var answ = send_dev(arr_send)
 
 function send_dev(mess){
     var out = {}
     for(var id in mess){
         out[id] = Number(Math.random().toFixed(2))
+
     }
     return out 
 }
@@ -106,12 +108,14 @@ function send_dev(mess){
 
 set_toxic(answ,scheme_arr)
 function set_toxic(answ,scheme_arr_in){
+
 	scheme_arr_in.forEach(item=>{
 		if(item.text!=''){
 			item['toxicity'] = answ[item.id]
 		}
 		
 	})
+
 
 }
 
@@ -225,8 +229,6 @@ function sort(scheme_arr_in){
 		}
 	}
 
-console.log(out)
-
 	function getSort(data) {
 		if(data.length<=1)return data
         var i,j;
@@ -234,7 +236,9 @@ console.log(out)
         {
             over = data[i]; 
              
+
             for(j = i-1; j >= 0 && data[j]['toxic'] > over['toxic']; j--) 
+
             {
                 data[j+1] = data[j];
             }
@@ -248,12 +252,14 @@ console.log(out)
 
 
 	setTimeout(function(){$(place).html(''); },4000)
+
 	setTimeout(function(){rebuild(scheme_out)},5000)
 	
 	function rebuild(elements){
 		elements.forEach(item=>{
 
 			$(place).append(item)
+
 		})
 		
 	}
@@ -267,7 +273,6 @@ console.log(out)
 
 				var content = $(post).next()
 				$(content).html(GLOBAL_DATA.old_text[key])
-				
 				$(content).append('<a class="lock" data-index="'+key+'">Lock here</a>')
 			}
 		})
