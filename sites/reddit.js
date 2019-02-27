@@ -30,7 +30,8 @@ function setToxicity(response) {
 }
 
 function aggregateToxicity(elements) {
-  elements.map((element) => {
+  elements.map((element, index) => {
+    var elementIndex = $(element).attr("data-debug-index") || index
     var id = $(element).find("div > div").attr("id")
     var children = $("[data-parent-id=" + id + "]").toArray()
 
@@ -43,30 +44,41 @@ function aggregateToxicity(elements) {
 
     var averageToxicity = overallToxicity / (children.length + 1)
 
+    console.log(overallToxicity)
+
+    $(element).attr("data-debug-index", elementIndex)
     $(element).attr("data-average-toxicity", averageToxicity)
-    $(element).attr("data-average-toxicity-class", Math.round(averageToxicity * 10))
+    $(element).attr("data-average-toxicity-class", Math.max(Math.round(averageToxicity * 10), 5))
   })
 }
 
+function stableCompare(e1, e2) {
+  var toxicity1 = parseInt(e1.getAttribute("data-average-toxicity-class"))
+  var toxicity2 = parseInt(e2.getAttribute("data-average-toxicity-class"))
+  var index1 = parseInt(e1.getAttribute("data-debug-index"))
+  var index2 = parseInt(e2.getAttribute("data-debug-index"))
+
+  if (toxicity1 < toxicity2)
+    return 1
+  else if (toxicity1 > toxicity2)
+    return -1
+  else if (index1 < index2)
+    return 1
+  else
+    return -1
+}
+
 function sortElements(elements) {
-  elements.sort((e1, e2) => {
-    var toxicity1 = parseFloat(e1.getAttribute("data-average-toxicity"))
-    var toxicity2 = parseFloat(e2.getAttribute("data-average-toxicity"))
-    if (toxicity1 < toxicity2)
-      return -1
-    else
-      return 1
-  })
-  elements.reverse().map((element) => {
+  elements.sort(stableCompare)
+  elements.map((element) => {
     var id = $(element).find("div > div").attr("id")
     var parent = $(element).parent()
     
-    var copy = $(element).clone()
     var children = $("[data-parent-id=" + id + "]").toArray()
 
     $(element).detach()
     sortElements(children)
-    parent.prepend(copy)
+    parent.prepend(element)
   })
 }
 
