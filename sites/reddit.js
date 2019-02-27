@@ -2,7 +2,7 @@ var oldUrl = null
 var oldCommentsNumber = 0
 
 function hideBuggedElements() {
-  $("div[id^='moreComments'], div[id^='continueThread']").hide()
+  $("div[id^='continueThread']").hide()
   $($('div[class ^= Comment]').find('span:contains(Comment deleted by user)')).hide()
 }
 
@@ -39,12 +39,10 @@ function aggregateToxicity(elements) {
 
     var overallToxicity = children.reduce(
       (acc, element) => acc + parseFloat(element.getAttribute("data-average-toxicity")),
-      parseFloat(element.getAttribute("data-toxicity"))
+      parseFloat(element.getAttribute("data-toxicity")) || 0
     )
 
     var averageToxicity = overallToxicity / (children.length + 1)
-
-    console.log(overallToxicity)
 
     $(element).attr("data-debug-index", elementIndex)
     $(element).attr("data-average-toxicity", averageToxicity)
@@ -83,7 +81,7 @@ function sortElements(elements) {
 }
 
 function setParent() {
-  $("div[data-toxicity] div[id] > div:first-child > div:nth-last-child(2)").map((index, element) => {
+  $("div[data-toxicity] div[id] > div:first-child > div:nth-last-child(2), div[id^='moreComments'] > div:first-child > div:last-child").map((index, element) => {
     var parentId = $(element).attr("class").split(" ")[0]
     $(element).parent().parent().parent().parent().attr("data-parent-id", parentId)
   })
