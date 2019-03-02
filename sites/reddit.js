@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 // var oldUrl = null
 // var oldCommentsNumber = 0
@@ -6,6 +7,15 @@
 //   $("div[id^='moreComments'], div[id^='continueThread']").hide()
 //   $($('div[class ^= Comment]').find('span:contains(Comment deleted by user)')).hide()
 // }
+=======
+var oldUrl = null
+var oldCommentsNumber = 0
+
+function hideBuggedElements() {
+  $("div[id^='continueThread']").hide()
+  $($('div[class ^= Comment]').find('span:contains(Comment deleted by user)')).hide()
+}
+>>>>>>> 738834f980670fcc1f5b7965ed3e830b43f1df31
 
 // function getRequest() {
 //   var request = {}
@@ -18,6 +28,7 @@
 //   return request
 // }
 
+<<<<<<< HEAD
 // function setToxicity(response) {
 //   Object.keys(response).map((key) => {
 //     $("#" + key).parent().parent().attr("data-toxicity", response[key])
@@ -48,6 +59,77 @@
 //     parent.prepend(copy)
 //   })
 // }
+=======
+function setToxicity(response) {
+  Object.keys(response).map((key) => {
+    $("#" + key).parent().parent().attr("data-toxicity", response[key])
+  })
+
+  setParent()
+
+  var elements = $("[data-toxicity]:not([data-parent-id]").toArray()
+  aggregateToxicity(elements)
+  sortElements(elements)
+}
+
+function aggregateToxicity(elements) {
+  elements.map((element, index) => {
+    var elementIndex = $(element).attr("data-debug-index") || index
+    var id = $(element).find("div > div").attr("id")
+    var children = $("[data-parent-id=" + id + "]").toArray()
+
+    aggregateToxicity(children)
+
+    var overallToxicity = children.reduce(
+      (acc, element) => acc + parseFloat(element.getAttribute("data-average-toxicity")),
+      parseFloat(element.getAttribute("data-toxicity")) || 0
+    )
+
+    var averageToxicity = overallToxicity / (children.length + 1)
+
+    $(element).attr("data-debug-index", elementIndex)
+    $(element).attr("data-average-toxicity", averageToxicity)
+    $(element).attr("data-average-toxicity-class", Math.max(Math.round(averageToxicity * 10), 5))
+  })
+}
+
+function stableCompare(e1, e2) {
+  var toxicity1 = parseInt(e1.getAttribute("data-average-toxicity-class"))
+  var toxicity2 = parseInt(e2.getAttribute("data-average-toxicity-class"))
+  var index1 = parseInt(e1.getAttribute("data-debug-index"))
+  var index2 = parseInt(e2.getAttribute("data-debug-index"))
+
+  if (toxicity1 < toxicity2)
+    return 1
+  else if (toxicity1 > toxicity2)
+    return -1
+  else if (index1 < index2)
+    return 1
+  else
+    return -1
+}
+
+function sortElements(elements) {
+  elements.sort(stableCompare)
+  elements.map((element) => {
+    var id = $(element).find("div > div").attr("id")
+    var parent = $(element).parent()
+    
+    var children = $("[data-parent-id=" + id + "]").toArray()
+
+    $(element).detach()
+    sortElements(children)
+    parent.prepend(element)
+  })
+}
+
+function setParent() {
+  $("div[data-toxicity] div[id] > div:first-child > div:nth-last-child(2), div[id^='moreComments'] > div:first-child > div:last-child").map((index, element) => {
+    var parentId = $(element).attr("class").split(" ")[0]
+    $(element).parent().parent().parent().parent().attr("data-parent-id", parentId)
+  })
+}
+>>>>>>> 738834f980670fcc1f5b7965ed3e830b43f1df31
 
 // function setParent() {
 //   $("div[data-toxicity] div[id] > div:first-child > div:nth-last-child(2)").map((index, element) => {
