@@ -9,8 +9,8 @@
   "content_scripts": 
   [ 
     {
-      "js": ["libs/jquery.js", "libs/spin.js", "sites/reddit.js", "request.js"],
-      "css": ["libs/spin.css"],
+      "js": ["libs/jquery.js", "libs/spin.js","libs/popover.min.js", "sites/reddit.js",  "request.js"],
+      "css": ["libs/spin.css", "libs/popover.min.css"],
       "matches": ["*://*.reddit.com/*"],
       "run_at": "document_start"
     }
@@ -21,7 +21,7 @@
       "scripts": [ "background.js", "libs/jquery.js" ]
    },
 
-   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.localhost/*","*://*.reddit.com/*"],
+   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.34.73.86.221/*","*://*.reddit.com/*"],
 
       "browser_action": {
         "default_title": "SNAT"
