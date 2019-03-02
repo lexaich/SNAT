@@ -1,13 +1,4 @@
-<<<<<<< HEAD
 
-// var oldUrl = null
-// var oldCommentsNumber = 0
-
-// function hideBuggedElements() {
-//   $("div[id^='moreComments'], div[id^='continueThread']").hide()
-//   $($('div[class ^= Comment]').find('span:contains(Comment deleted by user)')).hide()
-// }
-=======
 var oldUrl = null
 var oldCommentsNumber = 0
 
@@ -15,51 +6,7 @@ function hideBuggedElements() {
   $("div[id^='continueThread']").hide()
   $($('div[class ^= Comment]').find('span:contains(Comment deleted by user)')).hide()
 }
->>>>>>> 738834f980670fcc1f5b7965ed3e830b43f1df31
 
-// function getRequest() {
-//   var request = {}
-//   $("div[data-test-id=comment]:not([data-processed])").map((index, element) => {
-//     var id = $(element).parent().parent().parent().attr("id")
-//     var text = $(element).text()
-//     $(element).attr("data-processed", true)
-//     request[id] = text
-//   })
-//   return request
-// }
-
-<<<<<<< HEAD
-// function setToxicity(response) {
-//   Object.keys(response).map((key) => {
-//     $("#" + key).parent().parent().attr("data-toxicity", response[key])
-//   })
-//   setParent()
-//   sortElements($("[data-toxicity]:not([data-parent-id]").toArray())
-// }
-
-// function sortElements(elements) {
-//   elements.sort((e1, e2) => {
-//     var toxicity1 = parseFloat(e1.getAttribute("data-toxicity"))
-//     var toxicity2 = parseFloat(e2.getAttribute("data-toxicity"))
-//     if (toxicity1 < toxicity2)
-//       return -1
-//     else
-//       return 1
-//   })
-//   elements.reverse().map((element) => {
-//     var id = $(element).find("div > div").attr("id")
-//     var parent = $(element).parent()
-    
-//     var copy = $(element).clone()
-//     var children = $("[data-parent-id=" + id + "]").toArray()
-
-//     $(element).detach()
-//     sortElements(children)
-//     // $('что').appendTo('куда')
-//     parent.prepend(copy)
-//   })
-// }
-=======
 function setToxicity(response) {
   Object.keys(response).map((key) => {
     $("#" + key).parent().parent().attr("data-toxicity", response[key])
@@ -129,33 +76,6 @@ function setParent() {
     $(element).parent().parent().parent().parent().attr("data-parent-id", parentId)
   })
 }
->>>>>>> 738834f980670fcc1f5b7965ed3e830b43f1df31
-
-// function setParent() {
-//   $("div[data-toxicity] div[id] > div:first-child > div:nth-last-child(2)").map((index, element) => {
-//     var parentId = $(element).attr("class").split(" ")[0]
-//     $(element).parent().parent().parent().parent().attr("data-parent-id", parentId)
-//   })
-// }
-
-// function filterToxicComments() {
-//   hideBuggedElements()
-//   request = getRequest()
-//   sendToxicityRequest(request, setToxicity)
-// }
-
-// function checkPage() {
-//   var commentsNumber = $("div[data-test-id=comment]").length
-//   if ((oldUrl != window.location.href) || (oldCommentsNumber < commentsNumber)) {
-//     oldUrl = window.location.href
-//     oldCommentsNumber = commentsNumber
-//     filterToxicComments()    
-//   }
-// }
-
-
-// setInterval(checkPage, 5000)
-
 
 
 window.onload = function (){
@@ -174,10 +94,10 @@ window.onload = function (){
         cache:true,// Если кэш равен false, popover будет пересоздаваться каждый раз
         multi:false,// Разрешить показ сразу нескольких окошек одновременно
         arrow:true,// Показать стрелки или нет
-        title:'Выбрать класс токсичности',// Заголовок, если пустая строка, заголовок будет автоматически скрываться
+        title:'Не верно выбран?',// Заголовок, если пустая строка, заголовок будет автоматически скрываться
         content:`<div class="toxic" style="font-size: 15px;">
-            <p class="set_toxic fn">toxic</p>
-            <p class="set_toxic fp"> not toxic</p>
+            <p class="set_toxic fn modern embossed-link">Да</p>
+            <!--<p class="set_toxic modern embossed-link">Нет</p>-->
           </div>
 
           `,// Содержание, может быть функцией
@@ -189,10 +109,13 @@ window.onload = function (){
 
 $('body').on('click','.set_toxic',function(){
       // data-target="webuiPopover0"
-var parent = $(this).parent().parent().parent().parent()
+    var parent_popup = $(this).parent().parent().parent().parent()
     var value = $(this).attr('class').split(' ')[1]
-    var text = $('div[data-target='+$(parent).attr('id')+']').text()
-    var data = {text:text,class:value}
+    var parent_text = $('div[data-target='+$(parent_popup).attr('id')+']')
+    var parent = $(parent_text).parent().parent().parent().parent().parent()
+    
+    var text = $(parent_text).text()
+    var data = {text:text,toxic:$(parent).attr('data-toxicity'),url:location.href}
     // var elem = $(parent).attr('id')
     // $.ajax({
     //   url:API_PATH,
