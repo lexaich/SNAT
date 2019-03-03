@@ -13,6 +13,12 @@
       "css": ["libs/spin.css", "libs/popover.min.css", "sites/reddit.css"],
       "matches": ["*://*.reddit.com/*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["libs/jquery.js", "libs/spin.js","libs/popover.min.js", "sites/pikabu.js",  "request.js"],
+      "css": ["libs/spin.css", "libs/popover.min.css", "sites/pikabu.css"],
+      "matches": ["*://*.pikabu.ru/*"],
+      "run_at": "document_start"
     }
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
@@ -21,7 +27,7 @@
       "scripts": [ "background.js", "libs/jquery.js" ]
    },
 
-   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.34.73.86.221/*","*://*.reddit.com/*"],
+   "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.34.73.86.221/*","*://*.reddit.com/*","*://*.pikabu.ru/*"],
 
       "browser_action": {
         "default_title": "SNAT"
