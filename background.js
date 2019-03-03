@@ -22,7 +22,6 @@ chrome.runtime.onConnect.addListener(function(port) {
 chrome.runtime.onMessage.addListener(function(request){
 	if(request.action=='reload')
 	{
-		// ports.site.postMessage({action:"set threshold",threshold:request.threshold});
 		ports.site.postMessage({action:"eval",func:'location.reload()'});
 	}
 });
