@@ -93,6 +93,26 @@ function filterToxicComments() {
   Toxic.sendToxicityRequest(request, setToxicity)  
 }
 
+function initSaveToxicityPopups() {
+  $('body').on('click', '.set-toxic', function() {
+    var parentPopup = $(this).parent().parent().parent().parent()
+    var value = $(this).attr('class').split(' ')[1]
+    var parentText = $('div[data-target='+$(parentPopup).attr('id')+']')
+    var parent = $(parentText).parent().parent().parent().parent().parent()
+    
+    var text = $(parentText).text()
+    var data = {
+      text: text,
+      toxic: $(parent).attr('data-toxicity'),
+      url: location.href
+    }
+    Toxic.sendSaveToxicityRequest(data, function() {
+      console.log("Thanks!")
+      WebuiPopovers.hideAll();
+    })
+  })
+}
+
 function addSaveToxicityPopups() {
   $("div[data-test-id=comment]").webuiPopover({
     placement:'top',
@@ -115,34 +135,20 @@ function addSaveToxicityPopups() {
     type:'html',
     url:''
   });
-
-  $('body').on('click', '.set-toxic', function() {
-      var parentPopup = $(this).parent().parent().parent().parent()
-      var value = $(this).attr('class').split(' ')[1]
-      var parentText = $('div[data-target='+$(parentPopup).attr('id')+']')
-      var parent = $(parentText).parent().parent().parent().parent().parent()
-      
-      var text = $(parentText).text()
-      var data = {
-        text: text,
-        toxic: $(parent).attr('data-toxicity'),
-        url: location.href
-      }
-      Toxic.sendSaveToxicityRequest(data, function() {
-        console.log("Thanks!")
-        WebuiPopovers.hideAll();
-      })
-  })
 }
 
 function checkPage() { 
   var commentsNumber = $("div[data-test-id=comment]").length 
-  if ((oldUrl != window.location.href) || (oldCommentsNumber < commentsNumber)) {  
+  var newPageLoaded = (oldUrl != window.location.href)
+  if (newPageLoaded || (oldCommentsNumber < commentsNumber)) {  
     oldUrl = window.location.href  
     oldCommentsNumber = commentsNumber 
     filterToxicComments()
     addSaveToxicityPopups()
   }  
+  if (newPageLoaded) {
+    initSaveToxicityPopups()
+  }
 }  
 
 setInterval(checkPage, 5000)
