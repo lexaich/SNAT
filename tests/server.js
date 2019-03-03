@@ -13,4 +13,9 @@ app.post('/api', function(req, res){
   res.json(responseJSON);
 });
 
+app.post('/save', function(req, res){
+  console.log(req.body)
+  res.json({"saved": true});
+});
+
 app.listen(5000);
