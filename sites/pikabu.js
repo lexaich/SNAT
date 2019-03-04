@@ -5,8 +5,8 @@ var oldCommentsNumber = 0
 
 function getRequest() {  
   var request = {} 
-  $("div.comment:not([data-processed])").map((index, element) => { 
-    var id = $(element).parent().parent().parent().attr("id")  
+  $(".page-story div.comment:not([data-processed]):visible").map((index, element) => { 
+    var id = $(element).attr("id")  
     var text = $(element).text() 
     $(element).attr("data-processed", true)  
     request[id] = text 
@@ -122,7 +122,7 @@ function addSaveToxicityPopups() {
 }
 
 function checkPage() { 
-  var commentsNumber = $("div[class=comment__content]").length 
+  var commentsNumber = $(".page-story div.comment__content:visible").length 
   var newPageLoaded = (oldUrl != window.location.href)
   if (newPageLoaded || (oldCommentsNumber < commentsNumber)) {  
     oldUrl = window.location.href  
