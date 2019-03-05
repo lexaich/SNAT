@@ -1,14 +1,14 @@
 ﻿var API_PATH = "http://34.73.86.221/"
 
-var Toxic = {
+var ToxicAPI = {
   sendToxicityRequest: function(data, callback) {
-    Toxic.sendRequest("api", data, callback)
+    ToxicAPI.sendRequest("api", data, callback)
   },
   sendSaveToxicityRequest: function(data, callback) {
-    Toxic.sendRequest("save", data, callback)
+    ToxicAPI.sendRequest("save", data, callback)
   },
   sendRequest: function(action, data, callback){
-    var spinner = Toxic.startSpinner()
+    var spinner = ToxicAPI.startSpinner()
     fetch(API_PATH + action, {
       method: "POST",
       headers: {

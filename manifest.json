@@ -9,13 +9,7 @@
   "content_scripts": 
   [ 
     {
-      "js": ["libs/jquery.js", "libs/spin.js","libs/popover.min.js", "sites/reddit.js",  "request.js"],
-      "css": ["libs/spin.css", "libs/popover.min.css", "sites/toxic.css"],
-      "matches": ["*://*.reddit.com/*"],
-      "run_at": "document_start"
-    },
-    {
-      "js": ["libs/jquery.js", "libs/spin.js","libs/popover.min.js", "sites/pikabu.js",  "request.js"],
+      "js": ["libs/jquery.js", "libs/spin.js","libs/popover.min.js", "sites/site.js", "sites/pikabu.js",  "api.js"],
       "css": ["libs/spin.css", "libs/popover.min.css", "sites/toxic.css"],
       "matches": ["*://*.pikabu.ru/*"],
       "run_at": "document_start"
