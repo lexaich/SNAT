@@ -94,15 +94,60 @@ ToxicSite.prototype = {
     })  
   },
 
+  _addSaveToxicityPopups: function() {
+    this.getUnprocessedComments().webuiPopover({
+      placement:'top',
+      width:'auto',
+      height:'auto',
+      trigger:'hover',
+      style:'',
+      delay:{
+        show: 1,
+        hide: 300
+      },
+      cache:true,
+      multi:false,
+      arrow:true,
+      content:`<div class="toxic" style="font-size: 15px;">
+          <p class="set-toxic fn modern embossed-link">Wrong!</p>
+        </div>`,
+      closeable:false,
+      padding:true,
+      type:'html',
+      url:''
+    });
+  },
+
+  _initSaveToxicityPopups: function() {
+    $('body').on('click', '.set-toxic', function() {
+      var parentPopup = $(this).parent().parent().parent().parent()
+      var parentText = $('div[data-target=' + $(parentPopup).attr('id') + ']')
+      var parent = $(parentText).parent().parent()      
+      var text = $(parentText).text()
+      var data = {
+        text: text,
+        toxic: $(parent).attr('data-toxicity'),
+        url: window.location.href
+      }
+      ToxicAPI.sendSaveToxicityRequest(data, function() {
+        WebuiPopovers.hideAll();
+      })
+    })
+  },
+
   _checkPage: function() {
     var commentsNumber = this.getAllComments().length 
     var newPageLoaded = (this._oldUrl != window.location.href)
-    if (newPageLoaded || (this._oldCommentsNumber < commentsNumber)) {  
+    if (newPageLoaded) {  
       this._oldUrl = window.location.href  
+      this._initSaveToxicityPopups()
+    }  
+    if (newPageLoaded || (this._oldCommentsNumber < commentsNumber)) {
       this._oldCommentsNumber = commentsNumber 
       this.preload()
+      this._addSaveToxicityPopups()
       this._filterToxicComments()
-    }  
+    }
   },
 
   initialize: function() {
