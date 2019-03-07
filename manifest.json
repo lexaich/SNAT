@@ -18,7 +18,7 @@
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
    "background": {
       "persistent": false,
-      "scripts": [ "background.js", "libs/jquery.js" ]
+      "scripts": [ "libs/jquery.js", "background.js"]
    },
 
    "permissions": [ "tabs", "cookies", "activeTab", "storage", "management","*://*.34.73.86.221/*","*://*.reddit.com/*","*://*.pikabu.ru/*"],

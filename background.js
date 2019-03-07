@@ -1,39 +1,35 @@
-chrome.browserAction.onClicked.addListener(function(tab)
-{
+var API_PATH = "http://35.185.0.201/"
+var ACTIONS = {
+  "sendToxicityRequest": "api",
+  "sendSaveToxicityRequest": "save"
+}
 
-});
-chrome.storage.sync.set({threshold: 0}, function() {
-          // console.log('Value is set to ' + value);
-        });
-var ports = {};
-var id = 0;
+function _fetchRequest(action, data, callback){
+  fetch(API_PATH + action, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(function(res) { 
+    return res.json() 
+  })
+  .then(res => {
+    callback(res)
+  })
+  .catch(function(e){ 
+    console.log(e) 
+  })
+}
 
-chrome.runtime.onConnect.addListener(function(port) {
-	port.onMessage.addListener(function(request){
-		if(port.name == 'site')
-		{
-			console.log('site loaded')
-			ports.site = port;
-			id = port.sender.tab.id;
-			port.postMessage({action:"start"});
-		}
-	})
+chrome.runtime.onConnect.addListener((port) => {
+  port.onMessage.addListener(function(request) {
+    _fetchRequest(ACTIONS[request.action], request.data, (response) => {
+      port.postMessage({
+        action: request.action,
+        data: response,
+      });
+    })
+  });
 })
-chrome.runtime.onMessage.addListener(function(request){
-	if(request.action=='reload')
-	{
-		ports.site.postMessage({action:"eval",func:'location.reload()'});
-	}
-});
-
-function DoPort(func){
-	ports.site.postMessage({action:"eval",func:func});
-}
-
-function DoConnect(id,func){
-
-		chrome.tabs.sendMessage(id,{func:func})
-
-	
-}
-

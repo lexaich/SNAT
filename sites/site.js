@@ -89,8 +89,10 @@ ToxicSite.prototype = {
 
   _filterToxicComments: function() {
     request = this._getRequest()
+    var spinner = this._startSpinner()
     ToxicAPI.sendToxicityRequest(request, (response) => {
       this._setToxicityAndSort(response)
+      spinner.stop()
     })  
   },
 
@@ -150,9 +152,15 @@ ToxicSite.prototype = {
     }
   },
 
+  _startSpinner: function() {
+    var target = document.querySelector('body');
+    var spinner = new Spinner({}).spin(target);
+    return spinner
+  },
+
   initialize: function() {
     setInterval(() => {
       this._checkPage()
     }, 1000)
-  }
+  },
 }
