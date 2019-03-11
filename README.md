@@ -1,12 +1,10 @@
 # Extension for toxic-elf
 
+Now is available for [pikabu.ru](https://pikabu.ru)
+
 ## Installation
 
-1. Clone or download and extract **reddit_version branch** of this repo
-2. Check an availability of API_PATH in request.js to the current url (Ask about it in telegram chat)
+1. Download release version of the extension
+2. Check an availability of API_PATH in request.js to the current url (Ask about it in telegram chat, if there are a problem with API)
 3. Import an extension to your browser
-4. **Enable unsecure scripts for reddit** (instruction below)
-
-![](unsecure.png)
-
 5. Surf over the news! Toxic comments will appear in the end of a page... After a while.
