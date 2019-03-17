@@ -10,7 +10,8 @@ app.post('/api', function(req, res){
   var keys = Object.keys(req.body)
   var responseJSON = {}
   keys.map((key) => {
-    responseJSON[key] = 1
+    // responseJSON[key] = 1
+    responseJSON[key] = Math.random()
   })
   res.json(responseJSON);
 });
