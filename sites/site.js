@@ -4,11 +4,11 @@ function stableCompare(e1, e2) {
   var index1 = parseInt(e1.getAttribute("data-debug-index"))
   var index2 = parseInt(e2.getAttribute("data-debug-index"))
 
-  if (toxicity1 < toxicity2)
+  if (toxicity1 > toxicity2)
     return 1
-  else if (toxicity1 > toxicity2)
+  else if (toxicity1 < toxicity2)
     return -1
-  else if (index1 < index2)
+  else if (index1 > index2)
     return 1
   else
     return -1
@@ -25,6 +25,7 @@ var ToxicSite = function(site) {
   this.getChildren = site.getChildren
   this.getParent = site.getParent
   this.preload = site.preload || this.preload
+  this.getText = site.getText
 }
 
 ToxicSite.prototype = {
@@ -121,11 +122,13 @@ ToxicSite.prototype = {
   },
 
   _initSaveToxicityPopups: function() {
+    var self = this;
     $('body').on('click', '.set-toxic', function() {
       var parentPopup = $(this).parent().parent().parent().parent()
       var parentText = $('div[data-target=' + $(parentPopup).attr('id') + ']')
-      var parent = $(parentText).parent().parent()      
-      var text = $(parentText).text()
+      var parent = $(parentText).parent().parent()
+
+      var text = self.getText(parentText)
       var data = {
         text: text,
         toxic: $(parent).attr('data-toxicity'),
