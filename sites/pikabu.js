@@ -22,7 +22,7 @@ var pikabu = new ToxicSite({
   getParent: function(element) {
     return $(element).parent()
   },
-  getText:function(element){
+  getText: function(element){
    return $($(element[0]).find('.comment__body')[0]).find('.comment__content').text()
   }
 })

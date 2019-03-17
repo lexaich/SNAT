@@ -1,5 +1,5 @@
 var API_PATH = "http://35.185.0.201/"
-var API_PATH = "http://localhost:5000/"
+// var API_PATH = "http://localhost:5000/"
 var ACTIONS = {
   "sendToxicityRequest": "api",
   "sendSaveToxicityRequest": "save"

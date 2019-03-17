@@ -9,9 +9,9 @@ function stableCompare(e1, e2) {
   else if (toxicity1 < toxicity2)
     return -1
   else if (index1 > index2)
-    return 1
-  else
     return -1
+  else
+    return 1
 }
 
 var ToxicSite = function(site) {
@@ -37,7 +37,7 @@ ToxicSite.prototype = {
     var request = {} 
     this.getUnprocessedComments().map((index, element) => { 
       var id = this.getId(element)
-      var text = $(element).text() 
+      var text = this.getText($(element))
       $(element).attr("data-processed", true)  
       request[id] = text 
     }) 
