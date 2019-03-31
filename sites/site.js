@@ -61,7 +61,7 @@ ToxicSite.prototype = {
 
       $(element).attr("data-debug-index", elementIndex)
       $(element).attr("data-average-toxicity", averageToxicity)
-      $(element).attr("data-average-toxicity-class", Math.max(Math.round(averageToxicity * 10), 5))
+      $(element).attr("data-average-toxicity-class", Math.max(Math.round(averageToxicity * 10 + 0.5), 4))
     })
   },
 
