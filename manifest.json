@@ -13,6 +13,11 @@
       "css": ["libs/spin.css", "libs/popover.min.css", "sites/toxic.css"],
       "matches": ["*://*.pikabu.ru/*"],
       "run_at": "document_start"
+    }, {
+      "js": ["libs/jquery.js", "libs/spin.js","libs/popover.min.js", "sites/site.js", "sites/tut.js",  "api.js"],
+      "css": ["libs/spin.css", "libs/popover.min.css", "sites/toxic.css"],
+      "matches": ["*://talks.by/*"],
+      "run_at": "document_start"
     }
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
