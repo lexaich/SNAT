@@ -1,6 +1,6 @@
 # Extension for toxic-elf
 
-Now is available for [pikabu.ru](https://pikabu.ru)
+Now is available for [pikabu.ru](https://pikabu.ru) and [tut.by talks](https://talks.by)
 
 ## Installation
 
