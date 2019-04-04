@@ -4,7 +4,7 @@ Now is available for [pikabu.ru](https://pikabu.ru) and [tut.by talks](https://t
 
 ## Installation
 
-1. Download [release](https://github.com/lexaich/SNAT/releases/tag/v1.0.0) version of the extension
+1. Download [release](https://github.com/lexaich/SNAT/releases/tag/v1.0.1) version of the extension
 2. Check an availability of API_PATH in [background.js](https://github.com/lexaich/SNAT/blob/master/background.js#L1). For example:
 ```bash
 ping 35.185.0.201
